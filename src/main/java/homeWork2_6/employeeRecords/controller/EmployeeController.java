@@ -34,7 +34,6 @@ public class EmployeeController {
         return service.add(firstName, lastName);
     }
 
-
     @GetMapping("/remove")
     public Employee getRemoveEmployee(@RequestParam String firstName,
                                       @RequestParam String lastName) {
