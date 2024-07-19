@@ -24,12 +24,14 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee getAddEmployee(@RequestParam String firstName,
-                                   @RequestParam String lastName) {
+    public Employee getAddEmployee(@RequestParam("Имя: ") String firstName,
+                                   @RequestParam("Фамилия: ") String lastName,
+                                   @RequestParam("Зарплата: ") double salary,
+                                   @RequestParam("Департамент: ") short department) {
         if (firstName == null || lastName == null) {
             throw new EmployeeNotFoundException();
         }
-        return service.add(firstName, lastName);
+        return service.add(firstName, lastName, salary, department);
     }
 
     @GetMapping("/remove")
