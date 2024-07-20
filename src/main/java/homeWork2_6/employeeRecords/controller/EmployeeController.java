@@ -24,10 +24,10 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee getAddEmployee(@RequestParam("Имя: ") String firstName,
-                                   @RequestParam("Фамилия: ") String lastName,
-                                   @RequestParam("Зарплата: ") double salary,
-                                   @RequestParam("Департамент: ") short department) {
+    public Employee getAddEmployee(@RequestParam String firstName,
+                                   @RequestParam String lastName,
+                                   @RequestParam double salary,
+                                   @RequestParam short department) {
         if (firstName == null || lastName == null) {
             throw new EmployeeNotFoundException();
         }

@@ -36,7 +36,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Employee> getAllEmployeesByDepartment(short departmentId) {
         return employeeService.allEmployee()
                 .stream()
-                .filter(x -> x.getDepartment() == departmentId)
+                .filter(sortDepartment -> sortDepartment.getDepartment() == departmentId)
                 .collect(Collectors.toList());
     }
 
