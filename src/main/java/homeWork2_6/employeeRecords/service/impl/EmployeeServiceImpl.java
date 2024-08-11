@@ -5,6 +5,7 @@ import homeWork2_6.employeeRecords.exception.EmployeeAlreadyAddedException;
 import homeWork2_6.employeeRecords.exception.EmployeeNotFoundException;
 import homeWork2_6.employeeRecords.exception.EmployeeStorageIsFullException;
 import homeWork2_6.employeeRecords.service.EmployeeService;
+import homeWork2_6.employeeRecords.validation.WorkStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -15,16 +16,20 @@ import static java.util.Collections.unmodifiableCollection;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final Map<String, Employee> employeesCompany;
-
+    private final Map<String, Employee> employeesCompany = new HashMap<>();
     public static final short MAX_EMPLOYEES = 12;
+    private final WorkStringUtils workStringUtils;
 
-    public EmployeeServiceImpl(Map<String, Employee> employeesCompany) {
-        this.employeesCompany = new HashMap<>(MAX_EMPLOYEES);
+    public EmployeeServiceImpl(WorkStringUtils workStringUtils) {
+        this.workStringUtils = workStringUtils;
     }
 
     @Override
     public Employee add(String firstName, String lastName, double salary, short department) {
+        firstName = workStringUtils.checkAndCapitalize(firstName);
+        lastName = workStringUtils.checkAndCapitalize(lastName);
+
+
         Employee employeeAdd = new Employee(firstName, lastName);
         if (employeesCompany.size() >= MAX_EMPLOYEES) {
             throw new EmployeeStorageIsFullException();
