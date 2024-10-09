@@ -1,8 +1,7 @@
 package homeWork2_6.employeeRecords.controller;
 
 import homeWork2_6.employeeRecords.Employee;
-import homeWork2_6.employeeRecords.exception.EmployeeNotFoundException;
-import homeWork2_6.employeeRecords.service.EmployeeService;
+import homeWork2_6.employeeRecords.service.impl.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -12,43 +11,34 @@ import java.util.Collection;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    private final EmployeeService service;
+    private final EmployeeServiceImpl employeeService;
 
-    public EmployeeController(EmployeeService service) {
-        this.service = service;
-    }
-
-    @GetMapping()
-    public Collection<Employee> getWelcomeListEmployee() {
-        return service.allEmployee();
+    public EmployeeController(EmployeeServiceImpl employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/add")
-    public Employee getAddEmployee(@RequestParam String firstName,
-                                   @RequestParam String lastName,
-                                   @RequestParam double salary,
-                                   @RequestParam short department) {
-        if (firstName == null || lastName == null) {
-            throw new EmployeeNotFoundException();
-        }
-        return service.add(firstName, lastName, salary, department);
+    public Employee getAddEmployee(@RequestParam("firstName") String firstName,
+                                   @RequestParam("lastName") String lastName,
+                                   @RequestParam("salary") double salary,
+                                   @RequestParam("department") short department) {
+        return employeeService.add(firstName, lastName, salary, department);
     }
 
     @GetMapping("/remove")
-    public Employee getRemoveEmployee(@RequestParam String firstName,
-                                      @RequestParam String lastName) {
-        if (firstName == null || lastName == null) {
-            throw new EmployeeNotFoundException();
-        }
-        return service.remove(firstName, lastName);
+    public Employee getRemoveEmployee(@RequestParam("firstName") String firstName,
+                                      @RequestParam("lastName") String lastName) {
+        return employeeService.remove(firstName, lastName);
     }
 
     @GetMapping("/find")
-    public Employee getFindEmployee(@RequestParam String firstName,
-                                    @RequestParam String lastName) {
-        if (firstName == null || lastName == null) {
-            throw new EmployeeNotFoundException();
-        }
-        return service.find(firstName, lastName);
+    public Employee getFindEmployee(@RequestParam("firstName") String firstName,
+                                    @RequestParam("lastName") String lastName) {
+        return employeeService.find(firstName, lastName);
+    }
+
+    @GetMapping("/find/all")
+    private Collection<Employee> findAllEmployee() {
+        return employeeService.findAllEmployee();
     }
 }

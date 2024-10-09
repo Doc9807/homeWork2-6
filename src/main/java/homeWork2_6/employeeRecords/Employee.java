@@ -30,7 +30,7 @@ public class Employee {
     }
 
     public String getFullName() {
-        return firstName + " " + lastName;
+        return String.format("%s %s", firstName, lastName);
     }
 
     public double getSalary() {
@@ -70,12 +70,12 @@ public class Employee {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, salary, department);
+        return 0;
     }
 
     @Override
     public String toString() {
-        return String.format("Имя: %s, Фамилия: %s, Зарплата: %s, Департамент: %s",
+        return String.format("First name: %s, Last name: %s, Salary: %s, Department: %s",
                 firstName, lastName, salary, department);
     }
 }
