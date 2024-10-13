@@ -7,14 +7,14 @@ public class Employee {
     private String firstName;
     private String lastName;
     private double salary;
-    private short department;
+    private int department;
 
     public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Employee(String firstName, String lastName, double salary, short department) {
+    public Employee(String firstName, String lastName, double salary, int department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.salary = salary;
@@ -30,14 +30,14 @@ public class Employee {
     }
 
     public String getFullName() {
-        return firstName + " " + lastName;
+        return String.format("%s %s", firstName, lastName);
     }
 
     public double getSalary() {
         return salary;
     }
 
-    public short getDepartment() {
+    public int getDepartment() {
         return department;
     }
 
@@ -49,7 +49,7 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public void setDepartment(short department) {
+    public void setDepartment(int department) {
         this.department = department;
     }
 
@@ -75,7 +75,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return String.format("Имя: %s, Фамилия: %s, Зарплата: %s, Департамент: %s",
+        return String.format("First name: %s, Last name: %s, Salary: %s, Department: %s",
                 firstName, lastName, salary, department);
     }
 }

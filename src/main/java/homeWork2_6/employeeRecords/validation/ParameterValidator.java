@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 
-public class WorkStringUtils {
+public class ParameterValidator {
     public String checkAndCapitalize(String param) {
         if (!StringUtils.isAlpha(param)) {
             throw new ParamValidationException(param);

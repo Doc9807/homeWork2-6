@@ -4,6 +4,7 @@ import homeWork2_6.employeeRecords.Employee;
 import homeWork2_6.employeeRecords.service.DepartmentService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,34 +18,47 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Employee getMaxSalaryByDepartment(short departmentId) {
-        return employeeService.allEmployee()
+    public double getMaxSalaryByDepartment(int departmentId) {
+        return employeeService.findAllEmployee()
                 .stream()
-                .max((o1, o2) -> Double.compare(o1.getSalary(), o2.getSalary()))
-                .orElseThrow();
+                .filter(employee -> employee.getDepartment() == departmentId)
+                .map(Employee::getSalary)
+                .max(Comparator.naturalOrder())
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
-    public Employee getMinSalaryByDepartment(short departmentId) {
-        return employeeService.allEmployee()
+    public double getMinSalaryByDepartment(int departmentId) {
+        return employeeService.findAllEmployee()
                 .stream()
-                .min((o1, o2) -> Double.compare(o1.getSalary(), o2.getSalary()))
-                .orElseThrow();
+                .filter(employee -> employee.getDepartment() == departmentId)
+                .mapToDouble(Employee::getSalary)
+                .min()
+                .orElseThrow(IllegalArgumentException::new);
+
     }
 
     @Override
-    public List<Employee> getAllEmployeesByDepartment(short departmentId) {
-        return employeeService.allEmployee()
+    public List<Employee> getAllEmployeesByDepartment(int departmentId) {
+        return employeeService.findAllEmployee()
                 .stream()
-                .filter(sortDepartment -> sortDepartment.getDepartment() == departmentId)
-                .collect(Collectors.toList());
+                .filter(employee -> employee.getDepartment() == departmentId)
+                .toList();
     }
 
     @Override
-    public Map<Short, List<Employee>> getAllByDepartment() {
-        return employeeService.allEmployee()
+    public Map<Integer, List<Employee>> getAllByDepartment() {
+        return employeeService.findAllEmployee()
                 .stream()
-                .collect(Collectors.groupingBy(employee -> employee.getDepartment()));
+                .collect(Collectors.groupingBy(Employee::getDepartment));
+    }
 
+    @Override
+    public double getSumSalaryByDepartment(int departmentId) {
+        return employeeService.findAllEmployee().
+                stream().
+                filter(employee -> employee.getDepartment() == departmentId).
+                map(Employee::getSalary).
+                reduce(0d, Double::sum);
     }
 }

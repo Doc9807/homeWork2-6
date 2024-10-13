@@ -17,23 +17,28 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/max-salary")
-    public Employee getMaxSalaryByDepartment(@RequestParam() short departmentId) {
+    @GetMapping("/{id}/salary/sum")
+    public double getSumSalaryByDepartment(@PathVariable("departmentId") int departmentId) {
+        return departmentService.getSumSalaryByDepartment(departmentId);
+    }
+
+    @GetMapping("/{id}/salary/max")
+    public double getMaxSalaryByDepartment(@PathVariable("departmentId") int departmentId) {
         return departmentService.getMaxSalaryByDepartment(departmentId);
     }
 
-    @GetMapping("/min-salary")
-    public Employee getMinSalaryByDepartment(@RequestParam() short departmentId) {
+    @GetMapping("/{id}/salary/min")
+    public double getMinSalaryByDepartment(@PathVariable("departmentId") int departmentId) {
         return departmentService.getMinSalaryByDepartment(departmentId);
     }
 
-    @GetMapping("/all")
-    public List<Employee> getAllEmployeesByDepartment(@RequestParam() short departmentId) {
+    @GetMapping("/{id}/employees")
+    public List<Employee> getAllEmployeesByDepartment(@PathVariable("departmentId") int departmentId) {
         return departmentService.getAllEmployeesByDepartment(departmentId);
     }
 
-    @GetMapping("/sorting-departments")
-    public Map<Short, List<Employee>> getAllByDepartment() {
+    @GetMapping("/employees")
+    public Map<Integer, List<Employee>> getAllByDepartment() {
         return departmentService.getAllByDepartment();
     }
 }

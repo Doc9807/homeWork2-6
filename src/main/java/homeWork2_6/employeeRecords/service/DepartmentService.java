@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface DepartmentService {
-    Employee getMaxSalaryByDepartment(short departmentId);
+    double getMaxSalaryByDepartment(int departmentId);
 
-    Employee getMinSalaryByDepartment(short departmentId);
+    double getMinSalaryByDepartment(int departmentId);
 
-    List<Employee> getAllEmployeesByDepartment(short departmentId);
+    List<Employee> getAllEmployeesByDepartment(int departmentId);
 
-    Map<Short, List<Employee>> getAllByDepartment();
+    Map<Integer, List<Employee>> getAllByDepartment();
+
+    double getSumSalaryByDepartment(int departmentId);
 }
