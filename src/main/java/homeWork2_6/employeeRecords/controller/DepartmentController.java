@@ -10,7 +10,7 @@ import java.util.Map;
 @RestController
 @ResponseStatus
 @RequestMapping("/departments")
-public class DepartmentController implements DepartmentService {
+public class DepartmentController {
     private final DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
