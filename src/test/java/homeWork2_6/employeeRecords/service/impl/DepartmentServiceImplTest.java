@@ -8,10 +8,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.RandomUtils.nextDouble;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
@@ -25,20 +29,17 @@ class DepartmentServiceImplTest {
     @InjectMocks
     private DepartmentServiceImpl departmentService;
 
-    private static final Faker faker = new Faker();
+    private final Faker faker = new Faker();
 
-    Random random = new Random();
-    short randomNum = (short) (random.nextInt(10 - 3 + 1) + 3);
-
-    private static final Collection<Employee> employees = List.of(
-            new Employee(faker.name().firstName(), "Zamorskii", nextDouble(), (short) 1),
-            new Employee("Agafon", faker.name().lastName(), 146289.5, (short) 2),
-            new Employee(faker.name().firstName(), faker.name().lastName(), nextDouble(), (short) 2),
-            new Employee("Zaiats", "Volkov", 201763.4, (short) 1));
+    private final Collection<Employee> employees = List.of(
+            new Employee(faker.name().firstName(), "Zamorskii", nextDouble(50000, 500000), 1),
+            new Employee("Agafon", faker.name().lastName(), 146289.5, 2),
+            new Employee(faker.name().firstName(), faker.name().lastName(), nextDouble(50000, 500000), 2),
+            new Employee("Zaiats", "Volkov", 201763.4, 1));
 
     @Test
     void getSumSalaryByDepartment_WhenCorrectRandomizeData_ThenReturnCorrectSum() {
-        short department = 1;
+        int department = 1;
         when(employeeService.findAllEmployee()).thenReturn(employees);
         double expected = 0;
         for (Employee employee : employees) {
@@ -61,7 +62,7 @@ class DepartmentServiceImplTest {
         when(employeeService.findAllEmployee()).thenReturn(new ArrayList<>());
 
         //test
-        double actual = departmentService.getSumSalaryByDepartment((short) 1);
+        double actual = departmentService.getSumSalaryByDepartment( 1);
 
         //check
         assertThat(actual).isZero();
@@ -71,7 +72,7 @@ class DepartmentServiceImplTest {
 
     @Test
     void getMaxSalaryByDepartment_WhenCorrectRandomizeData_ThenReturnCorrectMaxSalary() {
-        short department = 2;
+        int department = 2;
         when(employeeService.findAllEmployee()).thenReturn(employees);
         double expected = employees.stream()
                 .filter(employee -> employee.getDepartment() == department)
@@ -93,7 +94,7 @@ class DepartmentServiceImplTest {
 
         //test && check
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> departmentService.getMaxSalaryByDepartment((short) 1));
+                .isThrownBy(() -> departmentService.getMaxSalaryByDepartment( 1));
 
         verify(employeeService, only()).findAllEmployee();
     }
@@ -104,14 +105,14 @@ class DepartmentServiceImplTest {
 
         //test && check
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> departmentService.getMaxSalaryByDepartment((short) randomNum));
+                .isThrownBy(() -> departmentService.getMaxSalaryByDepartment(nextInt(3, 50)));
 
         verify(employeeService, only()).findAllEmployee();
     }
 
     @Test
     void getMinSalaryByDepartment_WhenCorrectRandomizeData_ThenReturnCorrectMinSalary() {
-        short department = 2;
+        int department = 2;
         when(employeeService.findAllEmployee()).thenReturn(employees);
         double expected = employees.stream()
                 .filter(employee -> employee.getDepartment() == department)
@@ -133,7 +134,7 @@ class DepartmentServiceImplTest {
 
         //test && check
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> departmentService.getMinSalaryByDepartment((short) 1));
+                .isThrownBy(() -> departmentService.getMinSalaryByDepartment(1));
 
         verify(employeeService, only()).findAllEmployee();
     }
@@ -144,14 +145,14 @@ class DepartmentServiceImplTest {
 
         //test && check
         assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> departmentService.getMinSalaryByDepartment((short) randomNum));
+                .isThrownBy(() -> departmentService.getMinSalaryByDepartment(nextInt(3, 50)));
 
         verify(employeeService, only()).findAllEmployee();
     }
 
     @Test
     void getAllEmployeesByDepartment_WhenCorrectDepartment_ThenReturnEmployeeList() {
-        short department = 2;
+        int department = 2;
         when(employeeService.findAllEmployee()).thenReturn(employees);
         List<Employee> expected = new ArrayList<>();
         for (Employee employee : employees) {
@@ -174,7 +175,7 @@ class DepartmentServiceImplTest {
         when(employeeService.findAllEmployee()).thenReturn(employees);
 
         // test
-        List<Employee> actual = departmentService.getAllEmployeesByDepartment(randomNum);
+        List<Employee> actual = departmentService.getAllEmployeesByDepartment(nextInt(3, 50));
 
         // check
         assertThat(actual).isEmpty();
@@ -185,11 +186,11 @@ class DepartmentServiceImplTest {
     @Test
     void getAllByDepartment_WhenCorrectData_ThenReturnCorrectMap() {
         when(employeeService.findAllEmployee()).thenReturn(employees);
-        Map<Short, List<Employee>> expected = employees.stream()
+        Map<Integer, List<Employee>> expected = employees.stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
 
         // test
-        Map<Short, List<Employee>> actual = departmentService.getAllByDepartment();
+        Map<Integer, List<Employee>> actual = departmentService.getAllByDepartment();
 
         // check
         assertThat(actual).containsExactlyInAnyOrderEntriesOf(expected);
@@ -202,7 +203,7 @@ class DepartmentServiceImplTest {
         when(employeeService.findAllEmployee()).thenReturn(new ArrayList<>());
 
         // test
-        Map<Short, List<Employee>> actual = departmentService.getAllByDepartment();
+        Map<Integer, List<Employee>> actual = departmentService.getAllByDepartment();
 
         // check
         assertThat(actual).isEmpty();

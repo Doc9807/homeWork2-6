@@ -17,7 +17,7 @@ import static java.util.Collections.unmodifiableCollection;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final Map<String, Employee> employeesCompany = new HashMap<>();
-    public static final short MAX_EMPLOYEES = 12;
+    public static final int MAX_EMPLOYEES = 12;
     private final ParameterValidator parameterValidator;
 
     public EmployeeServiceImpl(ParameterValidator workStringUtils) {
@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee add(String firstName, String lastName, double salary, short department) {
+    public Employee add(String firstName, String lastName, double salary, int department) {
         firstName = parameterValidator.checkAndCapitalize(firstName);
         lastName = parameterValidator.checkAndCapitalize(lastName);
 

@@ -26,15 +26,15 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class EmployeeServiceImplTest {
-    private static final Faker faker = new Faker();
     private final EmployeeServiceImpl employeeService = new EmployeeServiceImpl(new ParameterValidator());
+    private static final Faker faker = new Faker();
 
     @Test
     void shouldAddEmployee_WhenCorrectParams_ThenAdd() {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
         double salary = nextDouble();
-        short department = (short) nextInt();
+        int department = nextInt();
 
         //test
         Employee actual = employeeService.add(firstName, lastName, salary, department);
@@ -52,7 +52,7 @@ class EmployeeServiceImplTest {
                 faker.name().firstName(),
                 faker.name().lastName(),
                 nextDouble(),
-                (short) nextInt());
+                nextInt());
 
         //test && check
         assertThatExceptionOfType(EmployeeAlreadyAddedException.class)
@@ -73,7 +73,7 @@ class EmployeeServiceImplTest {
                         firstName,
                         lastName,
                         nextDouble(),
-                        (short) nextInt()));
+                        nextInt()));
     }
 
     @Test
@@ -86,7 +86,7 @@ class EmployeeServiceImplTest {
                 firstName,
                 lastName,
                 nextDouble(),
-                (short) nextInt());
+                nextInt());
 
         //check
         assertThat(actual.getFirstName()).isEqualTo(StringUtils.capitalize(firstName));
@@ -95,12 +95,12 @@ class EmployeeServiceImplTest {
 
     @Test
     void shouldAddEmployee_WhenToManyEmployee_ThenThrowException() {
-        for (short i = 0; i < 12; i++) {
+        for (int i = 0; i < 12; i++) {
             employeeService.add(
                     faker.name().firstName(),
                     faker.name().lastName(),
                     nextDouble(),
-                    (short) nextInt());
+                    nextInt());
         }
 
         //test && check
@@ -109,14 +109,18 @@ class EmployeeServiceImplTest {
                         faker.name().firstName(),
                         faker.name().lastName(),
                         nextDouble(),
-                        (short) nextInt()));
+                        nextInt()));
     }
 
     @Test
     void shouldRemoveEmployee_WhenEmployeeExist_ThenEmployeeRemoved() {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
-        Employee expected = employeeService.add(firstName, lastName, nextDouble(), (short) nextInt());
+        Employee expected = employeeService.add(
+                firstName,
+                lastName,
+                nextDouble(),
+                nextInt());
 
         // test
         Employee actual = employeeService.remove(firstName, lastName);
@@ -141,10 +145,16 @@ class EmployeeServiceImplTest {
     void shouldFindEmployee_WhenEmployeeExist_ThenReturnEmployee() {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
-        Employee expected = employeeService.add(firstName, lastName, nextDouble(), (short) nextInt());
+        Employee expected = employeeService.add(
+                firstName,
+                lastName,
+                nextDouble(),
+                nextInt());
 
         // test
-        Employee actual = employeeService.find(firstName, lastName);
+        Employee actual = employeeService.find(
+                firstName,
+                lastName);
 
         // check
         assertThat(actual).isEqualTo(expected);
@@ -171,12 +181,12 @@ class EmployeeServiceImplTest {
     @Test
     void shouldFindAllEmployee_WhenRandomizeMap_ThenReturnEmptyCollection() {
         List<Employee> randomize = new ArrayList<>();
-        for (int i = 0; i < (short) nextInt(1, 12); i++) {
+        for (int i = 0; i < nextInt(1, 12); i++) {
             randomize.add(employeeService.add(
                     faker.name().firstName(),
                     faker.name().lastName(),
                     nextDouble(),
-                    (short) nextInt()));
+                    nextInt()));
         }
 
         // test
@@ -187,11 +197,12 @@ class EmployeeServiceImplTest {
     }
 
     private static Stream<Arguments> provideIncorrectParams() {
-        return Stream.of(Arguments.of("Не корректный второй параметр.",
-                        faker.name().firstName(), faker.number().digit()),
-                Arguments.of("Не корректный первый параметр.",
-                        faker.number().digit(), faker.name().firstName(),
-                        Arguments.of("Не корректны оба параметра",
-                                faker.number().digit(), faker.number().digit())));
+        return Stream.of
+                (Arguments.of("Не корректный второй параметр."
+                        , faker.name().firstName(), faker.number().digit()),
+                Arguments.of("Не корректный первый параметр."
+                        , faker.number().digit(), faker.name().lastName(),
+                Arguments.of("Не корректны оба параметра"
+                        , faker.number().digit(), faker.number().digit())));
     }
 }

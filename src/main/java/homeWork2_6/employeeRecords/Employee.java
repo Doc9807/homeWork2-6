@@ -7,14 +7,14 @@ public class Employee {
     private String firstName;
     private String lastName;
     private double salary;
-    private short department;
+    private int department;
 
     public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Employee(String firstName, String lastName, double salary, short department) {
+    public Employee(String firstName, String lastName, double salary, int department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.salary = salary;
@@ -37,7 +37,7 @@ public class Employee {
         return salary;
     }
 
-    public short getDepartment() {
+    public int getDepartment() {
         return department;
     }
 
@@ -49,7 +49,7 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public void setDepartment(short department) {
+    public void setDepartment(int department) {
         this.department = department;
     }
 
@@ -70,7 +70,7 @@ public class Employee {
 
     @Override
     public int hashCode() {
-        return 0;
+        return Objects.hash(firstName, lastName, salary, department);
     }
 
     @Override

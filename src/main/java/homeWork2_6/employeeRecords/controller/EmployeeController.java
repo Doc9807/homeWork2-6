@@ -1,6 +1,7 @@
 package homeWork2_6.employeeRecords.controller;
 
 import homeWork2_6.employeeRecords.Employee;
+import homeWork2_6.employeeRecords.service.EmployeeService;
 import homeWork2_6.employeeRecords.service.impl.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,36 +10,30 @@ import java.util.Collection;
 @RestController
 @ResponseStatus
 @RequestMapping("/employee")
-public class EmployeeController {
-
-    private final EmployeeServiceImpl employeeService;
-
-    public EmployeeController(EmployeeServiceImpl employeeService) {
-        this.employeeService = employeeService;
-    }
+public abstract class EmployeeController implements EmployeeService {
 
     @GetMapping("/add")
     public Employee getAddEmployee(@RequestParam("firstName") String firstName,
                                    @RequestParam("lastName") String lastName,
                                    @RequestParam("salary") double salary,
-                                   @RequestParam("department") short department) {
-        return employeeService.add(firstName, lastName, salary, department);
+                                   @RequestParam("department") int department) {
+        return add(firstName, lastName, salary, department);
     }
 
     @GetMapping("/remove")
     public Employee getRemoveEmployee(@RequestParam("firstName") String firstName,
                                       @RequestParam("lastName") String lastName) {
-        return employeeService.remove(firstName, lastName);
+        return remove(firstName, lastName);
     }
 
     @GetMapping("/find")
     public Employee getFindEmployee(@RequestParam("firstName") String firstName,
                                     @RequestParam("lastName") String lastName) {
-        return employeeService.find(firstName, lastName);
+        return find(firstName, lastName);
     }
 
     @GetMapping("/find/all")
-    private Collection<Employee> findAllEmployee() {
-        return employeeService.findAllEmployee();
+    public Collection<Employee> findAllEmployee() {
+        return findAllEmployee();
     }
 }
