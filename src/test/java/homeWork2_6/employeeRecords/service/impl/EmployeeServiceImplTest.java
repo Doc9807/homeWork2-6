@@ -198,11 +198,11 @@ class EmployeeServiceImplTest {
 
     private static Stream<Arguments> provideIncorrectParams() {
         return Stream.of
-                (Arguments.of("Не корректный второй параметр."
-                        , faker.name().firstName(), faker.number().digit()),
-                Arguments.of("Не корректный первый параметр."
-                        , faker.number().digit(), faker.name().lastName(),
-                Arguments.of("Не корректны оба параметра"
-                        , faker.number().digit(), faker.number().digit())));
+                (Arguments.of("Не корректный второй параметр.",
+                        faker.name().firstName(), faker.number().digit()),
+                Arguments.of("Не корректный первый параметр.",
+                        faker.number().digit(), faker.name().lastName(),
+                Arguments.of("Не корректны оба параметра",
+                        faker.number().digit(), faker.number().digit())));
     }
 }
